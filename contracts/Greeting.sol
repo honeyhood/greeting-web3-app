@@ -27,8 +27,8 @@ contract Greeting {
 
     function post(string memory _message) public {
         require(
-            lastPostedAt[msg.sender] + 15 minutes < block.timestamp,
-            "Wait 15m"
+            lastPostedAt[msg.sender] + 30 seconds < block.timestamp,
+            "Must wait 30 seconds before waving again."
         );
 
         lastPostedAt[msg.sender] = block.timestamp;

@@ -34,7 +34,7 @@ const App = () => {
   const [textValue, setTextValue] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const contractAddress = '0x4926C59a1A1594eb04d8fA128a5458BB2eb8417b';
+  const contractAddress = '0x3304E8a8f925dA8bD874a42597176995756253E0';
   const contractABI = abi.abi;
 
   const handleSubmit = (e) => {
@@ -85,13 +85,12 @@ const App = () => {
 
         const posts = await greetingContract.getAllPosts();
 
-        let postsCleaned = [];
-        posts.forEach((post) => {
-          postsCleaned.push({
+        let postsCleaned = posts.map((post) => {
+          return {
             address: post.posted,
             timestamp: new Date(post.timestamp * 1000),
             message: post.message,
-          });
+          };
         });
         setAllPosts(postsCleaned);
       } else {
@@ -116,7 +115,9 @@ const App = () => {
         );
 
         if (textValue) {
-          const postTxn = await greetingContract.post(textValue);
+          const postTxn = await greetingContract.post(textValue, {
+            gasLimit: 300000,
+          });
           console.log('Mining...', postTxn.hash);
           await setLoading(true);
 
